@@ -1,13 +1,21 @@
-<!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + TS</title>
-  </head>
-  <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.ts"></script>
-  </body>
+    <head>
+        <meta charset="UTF-8" />
+        <title>P5 Playground</title>
+    </head>
+    <body>
+        <div>
+            <label for="sketch-selector">Test</label
+            ><select id="sketch-selector">
+                <option value="example1" selected>Chapter1 - Example1</option>
+                <option value="example2">Chapter1 - Example2</option>
+                <!-- Add more options for each sketch -->
+            </select>
+        </div>
+
+        <!-- The p5 canvas will be injected somewhere in the body -->
+        <div id="sketch-container"></div>
+
+        <script type="module" src="./src/main.ts"></script>
+    </body>
 </html>

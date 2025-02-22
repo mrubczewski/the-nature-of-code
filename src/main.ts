@@ -1,24 +1,47 @@
-import './style.css'
-import typescriptLogo from './typescript.svg'
-import viteLogo from '/vite.svg'
-import { setupCounter } from './counter.ts'
+import p5 from 'p5'
+import { example1Sketch } from './sketches/chapter1/Example1'
+// Import more sketches here
+// import { example2Sketch } from "./sketches/chapter1/Example2";
+// ...
 
-document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
-  <div>
-    <a href="https://vite.dev" target="_blank">
-      <img src="${viteLogo}" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://www.typescriptlang.org/" target="_blank">
-      <img src="${typescriptLogo}" class="logo vanilla" alt="TypeScript logo" />
-    </a>
-    <h1>Vite + TypeScript</h1>
-    <div class="card">
-      <button id="counter" type="button"></button>
-    </div>
-    <p class="read-the-docs">
-      Click on the Vite and TypeScript logos to learn more
-    </p>
-  </div>
-`
+// A dictionary of all available sketches:
+const sketches: Record<string, (p: p5) => void> = {
+    example1: example1Sketch,
+    // example2: example2Sketch,
+    // ...
+}
 
-setupCounter(document.querySelector<HTMLButtonElement>('#counter')!)
+let currentP5Instance: p5 | null = null
+
+// Create a function that "loads" a sketch by creating a new p5 instance:
+function loadSketch(sketchKey: string) {
+    // If there's already a running p5 instance, destroy it:
+    if (currentP5Instance) {
+        currentP5Instance.remove()
+        currentP5Instance = null
+    }
+
+    // Get the selected sketch function
+    const sketchFunction = sketches[sketchKey]
+    if (sketchFunction) {
+        // Create a new p5 instance and attach it to #sketch-container
+        const container = document.getElementById('sketch-container')!
+        currentP5Instance = new p5(sketchFunction, container)
+    } else {
+        console.error(`Sketch "${sketchKey}" not found.`)
+    }
+}
+
+// Attach an event listener to the dropdown:
+window.addEventListener('load', () => {
+    const selector = document.getElementById(
+        'sketch-selector'
+    ) as HTMLSelectElement
+    selector.addEventListener('change', (e) => {
+        const target = e.target as HTMLSelectElement
+        loadSketch(target.value)
+    })
+
+    // Load the default sketch on page load (if you want):
+    loadSketch(selector.value)
+})
